@@ -1,37 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 Karyavah
 
-## Getting Started
+A web-based platform that connects people who need work done (e.g., house painting, plumbing) with skilled workers offering those services. This includes a searchable, tag-based system, profile management, reviews, a ranking system for workers, and gamified leveling up as workers complete tasks and get rated.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚧 Phases of Development
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Phase 1 – MVP (Core)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* User Authentication (Login/Register)
+* Roles: Client & Worker
+* Profile with bio, location, tags
+* Post Jobs and Service Offers
+* Search & Tag Filters
+* Inquiry Messaging
+* Admin Moderation Panel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Phase 2 – Engagement & Trust
 
-## Learn More
+* Star Ratings and Text Reviews
+* Worker Leveling System
 
-To learn more about Next.js, take a look at the following resources:
+  * Newbie → Skilled → Pro → Elite
+* Expanding Service Reach by Level
+* Notification System
+* Profile Verification
+* Reporting/Blocking Users
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Phase 3 – Smart Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Dynamic Tag Demand Analysis
+* Rate Suggestion Engine
+* Reputation-Based Worker Sorting
+* Worker & Client Dashboards
+* Location Heatmaps
+* Real-Time Chat (optional)
 
-## Deploy on Vercel
+### Phase 4 – Premium & Growth
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Paid Subscription Plans for Workers
+* Badge System (Verified, Top Performer)
+* Language Localization
+* Mobile App (React Native)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# karyavah
+---
+
+## 🛢️ Database Schema Overview
+
+Tables:
+
+* users (id, name, email, password, role, location, bio, level, verified)
+* tags (id, name)
+* user\_tags (user\_id, tag\_id)
+* jobs (id, user\_id, title, description, budget, location, status)
+* services (id, user\_id, title, description, rate, location)
+* job\_tags / service\_tags (linking tags to jobs/services)
+* messages (id, sender\_id, receiver\_id, message, timestamp)
+* reviews (id, reviewer\_id, reviewed\_id, job\_id, rating, comment, created\_at)
+* worker\_levels (user\_id, level\_name, completed\_jobs, avg\_rating, reach\_km)
+* notifications (id, user\_id, type, content, is\_read, created\_at)
+* reports (id, reported\_by\_id, reported\_user\_id, reason, status)
+
+---
+
+## 🧩 REST API Route Structure
+
+### Auth
+
+* POST /auth/register
+* POST /auth/login
+* GET /auth/me
+
+### Users
+
+* GET /users/\:id
+* PUT /users/\:id
+* GET /users/\:id/reviews
+
+### Jobs
+
+* POST /jobs
+* GET /jobs
+* GET /jobs/\:id
+* PUT /jobs/\:id
+* DELETE /jobs/\:id
+
+### Services
+
+* POST /services
+* GET /services
+* GET /services/\:id
+* PUT /services/\:id
+* DELETE /services/\:id
+
+### Tags & Search
+
+* GET /tags
+* GET /search?tags=\&location=
+
+### Reviews
+
+* POST /reviews
+* GET /reviews/\:userId
+
+### Messaging
+
+* POST /messages
+* GET /messages/\:conversationId
+
+### Notifications
+
+* GET /notifications
+* PUT /notifications/\:id/read
+
+### Reports
+
+* POST /reports
+
+---
+
+## 🖼️ UI Wireframes Overview
+
+1. Home Screen
+
+   * Tabs: "Find Work" / "Find Talent"
+   * Search bar, filters
+
+2. Post Job / Service Form
+
+   * Title, Description, Tags, Location, Rate/Budget
+
+3. Search Results Page
+
+   * Filter by tags, location, rating
+   * Cards for jobs/services
+
+4. Profile Page
+
+   * Bio, Skills, Ratings, Reviews, Level Badge
+
+5. Review & Rating Modal
+
+   * Star input, optional text comment
+
+6. Messaging
+
+   * Chat thread between client and worker
+
+7. Admin Panel
+
+   * List of flagged users, reported posts, statistics
+
+---
+
