@@ -9,7 +9,7 @@ A web-based platform that connects people who need work done (e.g., house painti
 ### Phase 1 – MVP (Core)
 
 * User Authentication (Login/Register)  ✅
-* Roles: Client & Worker
+* Roles: Client & Worker  ✅
 * Profile with bio, location, tags
 * Post Jobs and Service Offers
 * Search & Tag Filters
