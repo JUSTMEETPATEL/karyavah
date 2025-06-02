@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 export default function HomePage() {
   const isSignedIn = false; // WIP
@@ -56,8 +57,18 @@ export default function HomePage() {
                 </div>
               ) : (
                 <div className="flex space-x-2">
-                  <Button variant="outline">Sign In</Button>
-                  <Button>Sign Up</Button>
+                  <Link
+                    href="/sign-in"
+                    className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium"
+                  >
+                    Sign Up
+                  </Link>
                 </div>
               )}
             </div>
