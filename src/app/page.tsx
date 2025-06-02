@@ -1,9 +1,15 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { Profile } from "@/components/global/profile";
+import { useSession } from "@/lib/auth-client";
 
 export default function HomePage() {
-  const isSignedIn = false; // WIP
+  
+
+  const session = useSession();
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -42,18 +48,12 @@ export default function HomePage() {
             </nav>
 
             <div className="flex items-center space-x-4">
-              {isSignedIn ? (
-                <div>
+              {session.data?.user.id ? (
+                <div className="flex items-center space-x-4">
                   <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                    Post a Job
+                  Post a Job
                   </Button>
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage
-                      src="/placeholder.svg?height=32&width=32"
-                      alt="Profile"
-                    />
-                    <AvatarFallback>U</AvatarFallback>
-                  </Avatar>
+                  <Profile />
                 </div>
               ) : (
                 <div className="flex space-x-2">
