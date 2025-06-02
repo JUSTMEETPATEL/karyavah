@@ -22,8 +22,15 @@ model User {
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+  role         String    @default("Client") // Client, Worker, Admin 
   sessions      Session[]
   accounts      Account[]
+  jobs          Job[]
+  services      Service[]
+  reviewsAsReviewer Review[] @relation("Reviewer")
+  reviewsAsWorker   Review[] @relation("Worker")
+  sentMessages    Message[] @relation("Sender")
+  receivedMessages Message[] @relation("Receiver")
 
   @@map("user")
 }
@@ -71,4 +78,70 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+// Existing schema is preserved ✨
+
+model Job {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tags        Tag[]    @relation("JobTags")
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  status      JobStatus @default(PENDING)
+  messages    Message[]
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tags        Tag[]    @relation("ServiceTags")
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  isAvailable Boolean  @default(true)
+  rating      Float    @default(0.0)
+  level       Int      @default(1)
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  jobs      Job[]    @relation("JobTags")
+  services  Service[] @relation("ServiceTags")
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  rating     Int
+  comment    String?
+  createdAt  DateTime @default(now())
+  reviewerId String
+  workerId   String
+  reviewer   User     @relation("Reviewer", fields: [reviewerId], references: [id])
+  worker     User     @relation("Worker", fields: [workerId], references: [id])
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  content    String
+  senderId   String
+  receiverId String
+  createdAt  DateTime @default(now())
+  sender     User     @relation("Sender", fields: [senderId], references: [id])
+  receiver   User     @relation("Receiver", fields: [receiverId], references: [id])
+  jobId      String?
+  job        Job?     @relation(fields: [jobId], references: [id])
+}
+
+enum JobStatus {
+  PENDING
+  ASSIGNED
+  COMPLETED
+  CANCELLED
 }
