@@ -10,7 +10,7 @@ A web-based platform that connects people who need work done (e.g., house painti
 
 * User Authentication (Login/Register)  ✅
 * Roles: Client & Worker  ✅
-* Profile with bio, location, tags
+* Profile with bio, location, tags ✅
 * Post Jobs and Service Offers
 * Search & Tag Filters
 * Inquiry Messaging
