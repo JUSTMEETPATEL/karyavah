@@ -16,30 +16,35 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { authClient, useSession } from "@/lib/auth-client";
+import Link from "next/link";
 
 export function Profile() {
   const logout = async () => {
-     await authClient.signOut();
-     window.location.href = "/";
+    await authClient.signOut();
+    window.location.href = "/";
   };
 
   const session = useSession();
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage src={session.data?.user.image || "" } alt="@shadcn" />
-        <AvatarFallback>{session.data?.user.name.charAt(0).toUpperCase() || "M"}</AvatarFallback>
+          <AvatarImage src={session.data?.user.image || ""} alt="@shadcn" />
+          <AvatarFallback>
+            {session.data?.user.name.charAt(0).toUpperCase() || "M"}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
+          <Link href="/profile">
+            <DropdownMenuItem>
+              Profile
+              {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+            </DropdownMenuItem>
+          </Link>
           {/* <DropdownMenuItem>
             Billing
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
