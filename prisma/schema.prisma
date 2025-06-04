@@ -15,22 +15,23 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  email         String    @unique
-  name          String?
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  role         String    @default("Client") // Client, Worker, Admin 
-  sessions      Session[]
-  accounts      Account[]
-  jobs          Job[]
-  services      Service[]
-  reviewsAsReviewer Review[] @relation("Reviewer")
-  reviewsAsWorker   Review[] @relation("Worker")
-  sentMessages    Message[] @relation("Sender")
-  receivedMessages Message[] @relation("Receiver")
+  id                String    @id
+  email             String    @unique
+  name              String?
+  emailVerified     Boolean
+  image             String?
+  createdAt         DateTime
+  updatedAt         DateTime
+  role              String    @default("Client") // Client, Worker, Admin 
+  sessions          Session[]
+  accounts          Account[]
+  jobs              Job[]
+  services          Service[]
+  reviewsAsReviewer Review[]  @relation("Reviewer")
+  reviewsAsWorker   Review[]  @relation("Worker")
+  sentMessages      Message[] @relation("Sender")
+  receivedMessages  Message[] @relation("Receiver")
+  profile           Profile?
 
   @@map("user")
 }
@@ -80,17 +81,25 @@ model Verification {
   @@map("verification")
 }
 
-// Existing schema is preserved ✨
+model Profile {
+  id        String   @id @default(uuid())
+  bio       String?
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+}
 
 model Job {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tags        Tag[]    @relation("JobTags")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  tags        Tag[]     @relation("JobTags")
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
   status      JobStatus @default(PENDING)
   messages    Message[]
 }
@@ -110,10 +119,10 @@ model Service {
 }
 
 model Tag {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  jobs      Job[]    @relation("JobTags")
-  services  Service[] @relation("ServiceTags")
+  id       String    @id @default(uuid())
+  name     String    @unique
+  jobs     Job[]     @relation("JobTags")
+  services Service[] @relation("ServiceTags")
 }
 
 model Review {
