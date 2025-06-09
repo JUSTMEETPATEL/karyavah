@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { z } from 'zod';
+import { getSession } from '@/utils/session';
 
 
 
@@ -9,6 +10,7 @@ const createJobSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   userId: z.string().min(1, 'User ID is required'),
+  tags: z.array(z.string()).optional(), // Optional tags, can be an array of strings
   // You can add tag validation if needed, e.g., an array of tag IDs
 });
 
@@ -20,6 +22,10 @@ const updateJobSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const session = await getSession();
+  if(!session?.user.id){
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const body = await req.json();
     const validation = createJobSchema.safeParse(body);
@@ -28,7 +34,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(validation.error.errors, { status: 400 });
     }
 
-    const { title, description, userId } = validation.data;
+    const { title, description, userId,tags } = validation.data;
 
     // Optional: Check if the user exists
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -41,6 +47,19 @@ export async function POST(req: NextRequest) {
         title,
         description,
         userId,
+        // Conditionally add tags to the creation data
+        ...(tags && tags.length > 0 && {
+          tags: {
+            connectOrCreate: tags.map(tagName => ({
+              where: { name: tagName }, // Try to find an existing tag by name
+              create: { name: tagName }, // If not found, create a new tag
+            })),
+          },
+        }),
+      },
+      // Include tags in the response so you can see them immediately
+      include: {
+        tags: true,
       },
     });
 
@@ -79,6 +98,7 @@ export async function GET(req: NextRequest, { params }: { params: { jobId?: stri
     } else {
       // GET /api/jobs
       const jobs = await prisma.job.findMany({
+        take: 10, // Limit to 10 jobs for performance
         include: {
           user: {
             select: {

@@ -3,7 +3,7 @@ import React from 'react'
 
 const Page = () => {
   return (
-    <div className='flex items-center justify-center flex-col w-full h-full'>
+    <div className='mt-10 ml-10'>
       <JobListings />
     </div>
   )

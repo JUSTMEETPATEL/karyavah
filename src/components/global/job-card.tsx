@@ -13,6 +13,7 @@ interface JobCardProps {
   status: "PENDING" | "ACTIVE" | "COMPLETED" | "CANCELLED"
   tags: string[]
   description: string
+  createdAt?: Date | string
   onViewJob?: (id: string) => void
   onMessagePoster?: (id: string) => void
   className?: string
@@ -37,6 +38,16 @@ const statusConfig = {
   },
 }
 
+const formatDate = (date: Date | string | undefined) => {
+  if (!date) return ""
+  try {
+    const dateObj = typeof date === "string" ? new Date(date) : date
+    return dateObj.toLocaleDateString()
+  } catch {
+    return ""
+  }
+}
+
 export function JobCard({
   id,
   title,
@@ -44,6 +55,7 @@ export function JobCard({
   status,
   tags,
   description,
+  createdAt,
   onViewJob,
   onMessagePoster,
   className,
@@ -53,8 +65,8 @@ export function JobCard({
       className={cn(
         "group relative overflow-hidden transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl",
         "border border-gray-200 dark:border-gray-800",
-        "bg-white dark:bg-black",
-        "shadow-sm hover:shadow-md dark:shadow-black/20",
+        "bg-white dark:bg-gray-900",
+        "shadow-sm hover:shadow-md dark:shadow-gray-900/20",
         className,
       )}
     >
@@ -62,7 +74,7 @@ export function JobCard({
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <Home className="h-5 w-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-            <h3 className="font-semibold text-lg text-black dark:text-gray-100 truncate">{title}</h3>
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 truncate">{String(title)}</h3>
           </div>
           <Badge
             variant="secondary"
@@ -73,7 +85,7 @@ export function JobCard({
         </div>
 
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          By: <span className="font-medium text-black dark:text-gray-100">{author}</span>
+          By: <span className="font-medium text-gray-900 dark:text-gray-100">{String(author)}</span>
         </p>
       </CardHeader>
 
@@ -85,12 +97,14 @@ export function JobCard({
               variant="outline"
               className="text-xs bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300"
             >
-              🏷️ {tag}
+              🏷️ {String(tag)}
             </Badge>
           ))}
         </div>
 
-        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">&quot;{description}&quot;</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">&quot;{String(description)}&quot;</p>
+
+        {createdAt && <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">Posted: {formatDate(createdAt)}</p>}
       </CardContent>
 
       <CardFooter className="pt-0 pb-4">
@@ -99,7 +113,7 @@ export function JobCard({
             variant="default"
             size="sm"
             onClick={() => onViewJob?.(id)}
-            className="flex-1 bg-black hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-black"
+            className="flex-1 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-gray-900"
           >
             <Eye className="h-4 w-4 mr-2" />
             View Job
