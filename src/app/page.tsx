@@ -7,6 +7,9 @@ import { useSession } from "@/lib/auth-client";
 
 export default function HomePage() {
   
+  const Redirect = () => {
+    window.location.href = "/dashboard";
+  }
 
   const session = useSession();
 
@@ -50,7 +53,7 @@ export default function HomePage() {
             <div className="flex items-center space-x-4">
               {session.data?.user.id ? (
                 <div className="flex items-center space-x-4">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                  <Button onClick={Redirect} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                   Post a Job
                   </Button>
                   <Profile />
