@@ -12,3 +12,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </SidebarProvider>
   )
 }
+
+
+// export default function Layout({ children }: { children: React.ReactNode }) {
+//   return (
+//       <main>
+//         {children}
+//       </main>
+//   )
+// }
