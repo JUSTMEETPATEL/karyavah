@@ -166,7 +166,7 @@ export function JobListings() {
               placeholder="Search jobs, tags, or descriptions..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white dark:bg-gray-900"
+              className="pl-10 bg-white dark:bg-[#1B1B1B]"
             />
           </div>
 

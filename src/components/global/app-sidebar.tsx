@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, ChevronUp, Home, Inbox, Search, User2 } from "lucide-react"
+import { ChevronUp, FileText, Home, Inbox, Search, User2 } from "lucide-react"
 
 import {
   Sidebar,
@@ -32,9 +32,9 @@ const items = [
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "My Posts",
+    url: "/dashboard/myposts",
+    icon: FileText,
   },
   {
     title: "Search",

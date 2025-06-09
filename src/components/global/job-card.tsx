@@ -65,7 +65,7 @@ export function JobCard({
       className={cn(
         "group relative overflow-hidden transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl",
         "border border-gray-200 dark:border-gray-800",
-        "bg-white dark:bg-gray-900",
+        "bg-white dark:bg-[#1B1B1B]",
         "shadow-sm hover:shadow-md dark:shadow-gray-900/20",
         className,
       )}
