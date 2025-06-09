@@ -70,7 +70,7 @@ const Page = () => {
           ? profileData.role
           : 'Client') as 'Client' | 'Worker' | 'Admin', // Ensure role is valid
         bio: profileData.bio,
-        avatar: undefined, // Add avatar if available in UserProfile
+        avatar: session.data?.user.image || undefined, // Add avatar if available in UserProfile
         location: profileData.location ?? '',
         joinedDate: profileData.createdAt,
       }
